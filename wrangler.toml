@@ -1,0 +1,23 @@
+name = "app-store-api-worker"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[env.production]
+name = "app-store-api-worker"
+
+[env.staging]
+name = "app-store-api-worker-staging"
+
+# Environment variables (set these in Cloudflare dashboard or via wrangler secret)
+# API_KEY = "your_secret_api_key_here"
+
+# Optional: Configure custom domains
+# routes = [
+#   { pattern = "api.yourdomain.com/*", zone_name = "yourdomain.com" }
+# ]
+
+# Optional: Configure KV storage if needed for caching
+# kv_namespaces = [
+#   { binding = "CACHE", id = "your_kv_namespace_id" }
+# ]
