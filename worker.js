@@ -2,6 +2,7 @@
 
 import store from './index.js';
 import logger from './lib/logger.js';
+import common from './lib/common.js';
 
 // API key validation middleware
 function validateApiKey(request, env) {
@@ -47,7 +48,7 @@ function getRequestContext(request) {
     method: request.method,
     headers: {
       'user-agent': h.get('user-agent') || '',
-      'accept': h.get('accept') || '',
+      accept: h.get('accept') || '',
       'cf-connecting-ip': h.get('cf-connecting-ip') || '',
       'cf-ipcountry': h.get('cf-ipcountry') || ''
     }
@@ -243,10 +244,33 @@ async function handleVersionHistoryRoute(request, params) {
 // Main request handler
 export default {
   async fetch(request, env, _ctx) {
-      // Configure log level from environment (default is 'warn')
-      if (env && env.LOG_LEVEL) {
-        logger.setLevel(env.LOG_LEVEL);
-      }
+    // Configure log level from environment (default is 'warn')
+    if (env && env.LOG_LEVEL) logger.setLevel(env.LOG_LEVEL);
+    // Configure request behavior from env
+    if (env) {
+      try {
+        common.configure({
+          throttling: {
+            enabled: !!env.THROTTLE_RPS,
+            requests: Number(env.THROTTLE_RPS) || 10,
+            intervalMs: 1000
+          },
+          retry: {
+            enabled: env.RETRY_ENABLED !== 'false',
+            retries: env.RETRY_RETRIES ? Number(env.RETRY_RETRIES) : 1,
+            attemptTimeoutMs: env.RETRY_ATTEMPT_TIMEOUT_MS ? Number(env.RETRY_ATTEMPT_TIMEOUT_MS) : 1500,
+            totalTimeoutMs: env.RETRY_TOTAL_TIMEOUT_MS ? Number(env.RETRY_TOTAL_TIMEOUT_MS) : 4000
+          },
+          breaker: {
+            enabled: env.BREAKER_ENABLED !== 'false',
+            failureThreshold: env.BREAKER_FAILURE_THRESHOLD ? Number(env.BREAKER_FAILURE_THRESHOLD) : 3,
+            openMs: env.BREAKER_OPEN_MS ? Number(env.BREAKER_OPEN_MS) : 120000,
+            halfOpenProbeIntervalMs: env.BREAKER_PROBE_INTERVAL_MS ? Number(env.BREAKER_PROBE_INTERVAL_MS) : 30000
+          }
+        });
+      } catch (_) {}
+    }
+
     // Handle CORS preflight requests
     if (request.method === 'OPTIONS') {
       return new Response(null, {
