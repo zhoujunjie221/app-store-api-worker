@@ -3,7 +3,7 @@
 import store from './index.js';
 
 // API key validation middleware
-function validateApiKey (request, env) {
+function validateApiKey(request, env) {
   const apiKey = request.headers.get('x-api-key');
 
   if (!apiKey || apiKey !== env.API_KEY) {
@@ -31,7 +31,7 @@ function validateApiKey (request, env) {
 }
 
 // CORS headers helper
-function getCorsHeaders () {
+function getCorsHeaders() {
   return {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -39,7 +39,7 @@ function getCorsHeaders () {
   };
 }
 // Logging helpers
-function getRequestContext (request) {
+function getRequestContext(request) {
   const h = request.headers;
   return {
     url: request.url,
@@ -53,7 +53,7 @@ function getRequestContext (request) {
   };
 }
 
-function logRouteError (route, request, error, details) {
+function logRouteError(route, request, error, details) {
   try {
     const context = getRequestContext(request);
     const payload = {
@@ -73,7 +73,7 @@ function logRouteError (route, request, error, details) {
 }
 
 // Error response helper
-function errorResponse (message, status = 500) {
+function errorResponse(message, status = 500) {
   return new Response(JSON.stringify({ error: message }), {
     status,
     headers: {
@@ -84,7 +84,7 @@ function errorResponse (message, status = 500) {
 }
 
 // Success response helper
-function successResponse (data) {
+function successResponse(data) {
   return new Response(JSON.stringify(data), {
     status: 200,
     headers: {
@@ -95,7 +95,7 @@ function successResponse (data) {
 }
 
 // URL pattern matching helper
-function matchRoute (url, pattern) {
+function matchRoute(url, pattern) {
   const urlParts = url.pathname.split('/').filter(Boolean);
   const patternParts = pattern.split('/').filter(Boolean);
 
@@ -117,7 +117,7 @@ function matchRoute (url, pattern) {
 }
 
 // Route handlers
-async function handleAppRoute (request, params) {
+async function handleAppRoute(request, params) {
   try {
     console.log('Requesting app with id:', params.id);
     const url = new URL(request.url);
@@ -141,7 +141,7 @@ async function handleAppRoute (request, params) {
   }
 }
 
-async function handleListRoute (request, params) {
+async function handleListRoute(request, params) {
   try {
     const url = new URL(request.url);
     const queryParams = Object.fromEntries(url.searchParams);
@@ -164,7 +164,7 @@ async function handleListRoute (request, params) {
   }
 }
 
-async function handleSearchRoute (request) {
+async function handleSearchRoute(request) {
   try {
     const url = new URL(request.url);
     const queryParams = Object.fromEntries(url.searchParams);
@@ -176,7 +176,7 @@ async function handleSearchRoute (request) {
   }
 }
 
-async function handleDeveloperRoute (request, params) {
+async function handleDeveloperRoute(request, params) {
   try {
     const url = new URL(request.url);
     const queryParams = Object.fromEntries(url.searchParams);
@@ -189,7 +189,7 @@ async function handleDeveloperRoute (request, params) {
   }
 }
 
-async function handlePrivacyRoute (request, params) {
+async function handlePrivacyRoute(request, params) {
   try {
     const url = new URL(request.url);
     const queryParams = Object.fromEntries(url.searchParams);
@@ -202,7 +202,7 @@ async function handlePrivacyRoute (request, params) {
   }
 }
 
-async function handleReviewsRoute (request, params) {
+async function handleReviewsRoute(request, params) {
   try {
     const url = new URL(request.url);
     const queryParams = Object.fromEntries(url.searchParams);
@@ -214,7 +214,7 @@ async function handleReviewsRoute (request, params) {
   }
 }
 
-async function handleSimilarRoute (request, params) {
+async function handleSimilarRoute(request, params) {
   try {
     const url = new URL(request.url);
     const queryParams = Object.fromEntries(url.searchParams);
@@ -226,7 +226,7 @@ async function handleSimilarRoute (request, params) {
   }
 }
 
-async function handleVersionHistoryRoute (request, params) {
+async function handleVersionHistoryRoute(request, params) {
   try {
     const url = new URL(request.url);
     const queryParams = Object.fromEntries(url.searchParams);
@@ -241,7 +241,7 @@ async function handleVersionHistoryRoute (request, params) {
 
 // Main request handler
 export default {
-  async fetch (request, env, _ctx) {
+  async fetch(request, env, _ctx) {
     // Handle CORS preflight requests
     if (request.method === 'OPTIONS') {
       return new Response(null, {

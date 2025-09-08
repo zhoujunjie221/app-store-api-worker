@@ -4,7 +4,7 @@ const store = require('../index');
 const assert = require('chai').assert;
 const assertValidUrl = require('./common').assertValidUrl;
 
-function assertValid (review) {
+function assertValid(review) {
   assert.isString(review.id);
   assert(review.id);
   assert.isString(review.userName);

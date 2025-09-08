@@ -3,7 +3,7 @@
 const store = require('../index');
 const assert = require('chai').assert;
 
-function assertValid (privacyType) {
+function assertValid(privacyType) {
   assert.isString(privacyType.privacyType);
   assert.isString(privacyType.identifier);
   assert.isString(privacyType.description);

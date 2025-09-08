@@ -1,0 +1,43 @@
+{
+  "env": {
+    "es6": true,
+    "mocha": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "extends": "semistandard",
+  "plugins": [
+    "standard"
+  ],
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "one-var": "off",
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-else-return": "error",
+    "object-shorthand": ["error", "properties"]
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    ".wrangler/"
+  ]
+}
