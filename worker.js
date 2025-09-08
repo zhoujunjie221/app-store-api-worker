@@ -1,13 +1,14 @@
 'use strict';
 
 import store from './index.js';
+import logger from './lib/logger.js';
 
 // API key validation middleware
 function validateApiKey(request, env) {
   const apiKey = request.headers.get('x-api-key');
 
   if (!apiKey || apiKey !== env.API_KEY) {
-    console.warn('[Auth] API key validation failed', JSON.stringify({
+    logger.warn('[Auth] API key validation failed', JSON.stringify({
       hasApiKey: !!apiKey,
       reason: !apiKey ? 'missing' : 'invalid',
       ua: request.headers.get('user-agent') || '',
@@ -65,10 +66,10 @@ function logRouteError(route, request, error, details) {
       context,
       details: details || null
     };
-    console.error('[RouteError]', JSON.stringify(payload));
+    logger.error('[RouteError]', JSON.stringify(payload));
   } catch (e) {
     // Fallback logging
-    console.error('Route error:', route, error);
+    logger.error('Route error:', route, error);
   }
 }
 
@@ -119,7 +120,7 @@ function matchRoute(url, pattern) {
 // Route handlers
 async function handleAppRoute(request, params) {
   try {
-    console.log('Requesting app with id:', params.id);
+    logger.info('Requesting app with id:', params.id);
     const url = new URL(request.url);
     const queryParams = Object.fromEntries(url.searchParams);
     const result = await store.app({ id: params.id, ...queryParams });
@@ -242,6 +243,10 @@ async function handleVersionHistoryRoute(request, params) {
 // Main request handler
 export default {
   async fetch(request, env, _ctx) {
+      // Configure log level from environment (default is 'warn')
+      if (env && env.LOG_LEVEL) {
+        logger.setLevel(env.LOG_LEVEL);
+      }
     // Handle CORS preflight requests
     if (request.method === 'OPTIONS') {
       return new Response(null, {
