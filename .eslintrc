@@ -4,12 +4,16 @@
     "mocha": true,
     "node": true
   },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
   "extends": "semistandard",
   "plugins": [
     "standard"
   ],
   "rules": {
-    "no-unused-vars": [2, { "vars": "all", "args": "after-used" }],
+    "no-unused-vars": [2, { "vars": "all", "args": "after-used", "argsIgnorePattern": "^_" }],
     "no-var": "error",
     "prefer-const": "error",
     "no-else-return": "error",

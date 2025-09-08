@@ -35,6 +35,9 @@
     "xml2js": "^0.6.2"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250906.0",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
     "chai": "^4.3.8",
     "eslint": "^8.49.0",
     "eslint-config-semistandard": "^6.0.1",
@@ -42,6 +45,7 @@
     "eslint-plugin-promise": "^1.1.0",
     "eslint-plugin-standard": "^4.0.1",
     "mocha": "^10.2.0",
+    "typescript": "^5.9.2",
     "validator": "^13.11.0",
     "wrangler": "^4.34.0"
   }
